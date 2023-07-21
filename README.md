@@ -1,4 +1,4 @@
-<center><strong>html.js</strong></center>
+<p align="center"><b>html.js</b></p>
 
 html.js is the server-side js framework for HTML. Build modern hyper-speed web apps and web sites with minimal fuss.
 
