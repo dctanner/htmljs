@@ -146,10 +146,26 @@ const BlogPost = async ({ post, linked }) => (
 
 But how does the server know when to return the full page including the AppLayout, or just the BlogPost view? That's where our rootLayout(), layout() and view() html.js functions come in. They check for HX-Request, HX-Boosted and HX-Target headers, and appropriately return the full page or just the view.
 
+We can make our links cleaner by writing a Link jsx function. html.js includes two helpful functions: Link and Form.
+
+```js
+export const Link = ({ to, "hx-target": hxTarget, "class": className, children }) => {
+  if (hxTarget) {
+    return html`<a href="${to}" class="${className}" hx-get="${to}" hx-target="${hxTarget}" hx-push-url="true">${children}</a>`
+  } else {
+    return html`<a href="${to}" class="${className}" hx-boost="true">${children}</a>`
+  }
+}
+```
+
+Now you can simply write `<Link to="/post/1" hx-target="#main">Post 1</Link>` and the correct htmx attributes will be added when hxTarget is passed. We also add `hx-push-url="true"` to make the browser history update. You may also want to add `hx-swap` which specifies a [merge strategy for updating the HTML](https://htmx.org/docs/#morphing). We recommend [Idiomorph](https://github.com/bigskysoftware/idiomorph#htmx) lib which requires the `hx-swap="morph"` attribute.
+
 ## Where next?
 
 Now you've seen the basics of a html.js app, you probably want to learn see what a more feature complete app looks like. Checkout the [htmljs-todo-example repo](https://github.com/dctanner/htmljs-todo-example) which uses html.js deployed to Cloudflare Workers with Cloudflare D1 SQLite database and tailwindcss.
 
-html.js is currently the small single js file htmljs.js you see in this repo. Simply copy it into your app (alongside hono and htmx). We'll be releasing as an npm package once we have stabilized the design decicions. We're also working on a CLI tool to help you get started with a new html.js app.
+Hono and htmx have many powerful features which we haven't covered here. We recommend reading the [Hono docs](https://hono.dev) and [htmx docs](https://htmx.org).
+
+html.js is currently the small single js file src/htmljs.js you see in this repo. Simply copy it into your app (alongside hono and htmx). We'll be releasing as an npm package once we have stabilized the design decicions. We're also working on a CLI tool to help you get started with a new html.js app.
 
 html.js is in its infancy. If you think it's exciting, please contribute!
