@@ -4,7 +4,7 @@ html.js is the server-side js framework for HTML. Build modern hyper-speed web a
 
 # What is html.js?
 
-A html.js app is server side js that returns html to the browser. You could this a back to the future approach. There are several things that make the html.js approach unique:
+A html.js app is server side js that returns html to the browser. It's a back-to-the-future web stack. There are several things that make the html.js approach unique:
 
 - HTML is your application's state. There is no need to manage state in js, it's all in the html. There is often no need to write js (although html.js relies on several js libraries under the hood).
 - When the user clicks a link or submits a form, the server only returns the HTML that has changed. This is done using the [htmx](https://htmx.org) library. This makes your app feel like a single page app, but without the complexity of managing client side state.
