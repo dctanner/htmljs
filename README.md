@@ -18,6 +18,7 @@ The foundations of html.js are built using the following excellent libraries. Ge
 - [hono.dev](https://hono.dev) provides a familiar express style router and jsx templating
 - [htmx.org](https://htmx.org) powers ajax partial html fetching
 
+I'df you're planning to deploy to Cloudflare Workers, get familiar with the [Workers docs](https://developers.cloudflare.com/workers/).
 # What does a html.js app look like?
 
 html.js has a flexible file structure which grows with your app. You can start with a single js file, and evolve your app into a full MVC architecture over time.
@@ -73,10 +74,10 @@ const AppLayout = ({ context, children }) => html`
 
 Take note of a few interesting things here:
 
-- You pass the view() and rootLayout() functions jsx or html to render. The jsx you pass rootLayout() is passed the children prop, which allows it to act as a layout.
-- Homepage, GetBlogPost and AppLayout are all equivalent jsx functions. A jsx function can be as simple as some html, jsx or an async function that makes network or database calls before returning html or jsx. You can use jsx and html`` interchangably.
+- You pass the view() and rootLayout() functions jsx or html to render (there is also a layout() function used for nested layouts). The jsx you pass to these functions is always called with a single props param. props.context is the [Hono context object](https://hono.dev/api/context) and is always passed. The rootLayout() is also passed the children prop, which allows it to act as a layout.
+- Homepage, GetBlogPost and AppLayout are all equivalent jsx functions. A jsx function can be as simple as some html, jsx or an async function that makes network or database calls before returning html or jsx.
 
-Next we could separete out a jsx function to make it reusable. Lets take the jsx GetBlogPost returns and move it to a new jsx function BlogPost:
+Let's improve the code by separating out the jsx GetBlogPost returns into a new jsx function called BlogPost:
 
 ```js
 const BlogPost = async ({ post }) => (
@@ -95,6 +96,5 @@ const GetBlogPost = async ({ context }) => {
 ```
 
 Now we can reuse BlogPost in another function if we like.
-Remember, jsx functions are functions, so `return <BlogPost post={post} />` can also be written as `return BlogPost({ post })`.
+Remember, jsx is a function, so `return <BlogPost post={post} />` can also be written as `return BlogPost({ post })`.
 
-```js
