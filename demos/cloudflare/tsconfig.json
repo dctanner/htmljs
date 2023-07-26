@@ -5,7 +5,7 @@
 		"jsx": "react",
 		"module": "es2022",
 		"moduleResolution": "node",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"paths": {
 			"@*": ["src/*"],
 			"htmljs": ["../../src/htmljs.ts"]

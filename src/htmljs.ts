@@ -3,6 +3,7 @@ import { html } from 'hono/html';
 import { Context, Next } from 'hono';
 import { HtmlEscapedString } from 'hono/utils/html';
 export * from 'hono/html';
+export { handle } from 'hono/cloudflare-pages';
 
 type ViewProps = {
   context: Context;
@@ -11,12 +12,13 @@ type LayoutProps = {
   context: Context;
   children: HtmlEscapedString;
 };
-export type ViewFunction = (
-  props: ViewProps
-) => Promise<HtmlEscapedString> | HtmlEscapedString;
-export type LayoutFunction = (
-  props: LayoutProps
-) => Promise<HtmlEscapedString> | HtmlEscapedString;
+type EndpointResponse =
+  | Promise<HtmlEscapedString>
+  | HtmlEscapedString
+  | Promise<HtmlEscapedString[]>
+  | HtmlEscapedString[];
+export type ViewFunction = (props: ViewProps) => EndpointResponse;
+export type LayoutFunction = (props: LayoutProps) => EndpointResponse;
 
 export class HtmlJS {
   app: Hono;
@@ -29,7 +31,8 @@ export class HtmlJS {
   view(viewToRender: ViewFunction) {
     return async (c: Context) => {
       const newBody = await viewToRender({ context: c });
-      return c.html(newBody);
+      const newBodyText = Array.isArray(newBody) ? newBody.join('\n') : newBody;
+      return c.html(newBodyText);
     };
   }
 
@@ -55,7 +58,10 @@ export class HtmlJS {
           context: c,
           children: html(curBody),
         });
-        c.res = c.html(newBody);
+        const newBodyText = Array.isArray(newBody)
+          ? newBody.join('\n')
+          : newBody;
+        c.res = c.html(newBodyText);
       }
     };
   }
