@@ -1,0 +1,17 @@
+{
+  "name": "htmljs",
+  "version": "1.0.0",
+  "description": "html.js is the server-side js framework for HTML",
+  "main": "src/htmljs.ts",
+  "keywords": [
+    "HTML",
+    "HTMX",
+    "HONO",
+    "TYPESCRIPT"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hono": "^3.3.3"
+  }
+}
