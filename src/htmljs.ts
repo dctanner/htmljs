@@ -36,24 +36,27 @@ export class HtmlJS {
   layout(layoutToApply: LayoutFunction, isRoot = false) {
     return async (c: Context, next: Next) => {
       await next();
-      if (c.req.method !== 'GET') {
-        // ignore layout for non-GET requests
-        return;
-      }
       const isHXBoosted = c.req.header('HX-Boosted') === 'true';
-      if (isRoot && isHXBoosted) {
-        // ignore root layout for boosted requests
-        return;
+      const isHXRequested = c.req.header('HX-Request') === 'true';
+      const isTargetBody =
+        c.req.header('HX-Target') === '#body' ||
+        c.req.header('HX-Target') === 'body';
+      // render all layouts including root if there's no HX-Request header
+      const renderRoot = !isHXRequested;
+      const renderLayout =
+        !isRoot && isHXRequested && (isHXBoosted || isTargetBody);
+      console.log({ isRoot, renderRoot, isHXRequested, renderLayout });
+      if (renderRoot || renderLayout) {
+        const curBody = (await c.res.text()) as unknown as TemplateStringsArray;
+        // To overwrite res, set it to undefined before setting new value
+        // https://github.com/honojs/hono/pull/970 released in https://github.com/honojs/hono/releases/tag/v3.1.0
+        c.res = undefined;
+        const newBody = await layoutToApply({
+          context: c,
+          children: html(curBody),
+        });
+        c.res = c.html(newBody);
       }
-      const curBody = (await c.res.text()) as unknown as TemplateStringsArray;
-      // To overwrite res, set it to undefined before setting new value
-      // https://github.com/honojs/hono/pull/970 released in https://github.com/honojs/hono/releases/tag/v3.1.0
-      c.res = undefined;
-      const newBody = await layoutToApply({
-        context: c,
-        children: html(curBody),
-      });
-      c.res = c.html(newBody);
     };
   }
 }

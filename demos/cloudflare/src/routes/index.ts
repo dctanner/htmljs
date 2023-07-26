@@ -1,4 +1,4 @@
-import { html } from 'htmljs';
+import { html, ViewFunction } from 'htmljs';
 
-export const HomePage = () => html`<h1>Home!</h1>
+export const HomePage: ViewFunction = () => html`<h1>Home!</h1>
 	<a href="/bob">See Bob</a>`;

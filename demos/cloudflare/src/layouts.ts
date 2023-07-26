@@ -5,7 +5,6 @@ export const RootLayout: LayoutFunction = ({ children }) => html`
 		<head>
 			<meta charset="UTF-8" />
 			<title>Cloudflare Demo</title>
-			<!-- HTMX -->
 			<script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
 		</head>
 		<body hx-boost="true">
