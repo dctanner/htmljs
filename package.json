@@ -1,13 +1,14 @@
 {
   "name": "htmljs",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ts-node demo/index.ts"
-  },
-  "keywords": [],
+  "description": "html.js is the server-side js framework for HTML",
+  "main": "src/htmljs.ts",
+  "keywords": [
+    "HTML",
+    "HTMX",
+    "HONO",
+    "TYPESCRIPT"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
